@@ -26,7 +26,7 @@ COLLECTION_NAME = "hr_it_policies"
 
 # Cosine distance: 0 = identical, 2 = opposite. Chunks further away than this
 # are treated as "not relevant", which lets the agent say "I don't know".
-MAX_DISTANCE = 0.75
+MAX_DISTANCE = 0.65
 
 
 def _split_markdown(path: Path) -> list[dict]:
