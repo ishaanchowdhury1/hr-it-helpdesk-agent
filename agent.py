@@ -103,7 +103,7 @@ def get_llm():
         return ChatGoogleGenerativeAI(model=os.getenv("GOOGLE_MODEL", "gemini-3.5-flash"), temperature=0, max_retries=2, timeout=30)
     if provider == "groq":
         from langchain_groq import ChatGroq
-        return ChatGroq(model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"), temperature=0, max_retries=2, timeout=30)
+        return ChatGroq(model=os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"), temperature=0, max_retries=2, timeout=30)
     raise ValueError(f"Unknown LLM_PROVIDER '{provider}'. Use anthropic, openai, google or groq.")
 
 
