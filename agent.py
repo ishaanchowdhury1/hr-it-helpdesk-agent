@@ -249,6 +249,11 @@ def build_graph(mcp_tools: dict, llm=None):
         text = _text_of(last.content)
         events = list(state.get("guardrail_events", []))
 
+        # If the model gave the "don't know" reply, use the exact standard text
+        # (models sometimes reword it or mistype the helpdesk emails)
+        if re.search(r"don.t have that information", text, re.IGNORECASE):
+            text = NO_ANSWER_TEXT
+
         # Make sure sources are shown even if the model forgot to list them
         sources = _collect_sources(state["messages"])
         if sources and "sources:" not in text.lower() and NO_ANSWER_TEXT not in text:
