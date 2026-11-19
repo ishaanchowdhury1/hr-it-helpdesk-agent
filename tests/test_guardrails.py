@@ -63,6 +63,10 @@ check("ticket ID kept", "IT-2026-0114" in red)
 check("date kept", "2026-11-12" in red)
 check("leave numbers kept", redact_pii("You have 8 casual, 7 sick and 9 earned days.")[0]
       == "You have 8 casual, 7 sick and 9 earned days.")
+check("phone with no-break spaces masked",
+      "98300" not in redact_pii("Phone: **+91\u202f98300\u202f33333**")[0]
+      and "98300" not in redact_pii("+91\u00a098300\u00a033333")[0]
+      and "98300" not in redact_pii("98300\u201133333")[0])
 check("rupee amount kept", "₹1,000" in redact_pii("Up to ₹1,000 per month")[0])
 
 # --- Scope keywords ---

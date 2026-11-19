@@ -62,10 +62,18 @@ _PII_PATTERNS = [
 _EMAIL_REGEX = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 
 
+_UNICODE_SPACES = re.compile(r"[\u00A0\u2000-\u200B\u202F\u205F\u3000]")
+_UNICODE_DASHES = re.compile(r"[\u2010-\u2015\u2212\uFE58\uFE63\uFF0D]")
+
+
 def redact_pii(text: str) -> tuple[str, list[str]]:
     """Mask PII in text. Returns (redacted_text, list_of_pii_types_found)."""
     if not text:
         return text, []
+    # LLMs often write numbers with no-break spaces or special hyphens
+    # (e.g. "+91\u202f98300\u202f33333"); normalise them so the patterns still match.
+    text = _UNICODE_SPACES.sub(" ", text)
+    text = _UNICODE_DASHES.sub("-", text)
     found = []
 
     def _email_sub(m: re.Match) -> str:
